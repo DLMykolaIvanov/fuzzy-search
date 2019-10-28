@@ -20,18 +20,6 @@ window.addEventListener('load', () => {
 
 	};
 
-	function renderSelect(phoneDB) {
-		const uniquePhones = [];
-		let selectHtml = '<option value="">All</option>';
-		phoneDB.forEach((item) => {
-			if ( !uniquePhones.includes( item.Brand ) ) {
-				uniquePhones.push( item.Brand );
-				selectHtml += '<option value="' + item.Brand + '">' + item.Brand + '</option>';
-			}
-		});
-		select.innerHTML = selectHtml;
-	}
-
 	// search option
 	const options = {
 		threshold: 0.6,
@@ -75,7 +63,6 @@ window.addEventListener('load', () => {
 		if ( dbResponse.ok ) {
 			db = await dbResponse.json();
 			preload.hide('Load done');
-			renderSelect(db);
 		} else {
 			console.log('DB error:', dbResponse.status);
 			preload.show('Load phone DB error!');
