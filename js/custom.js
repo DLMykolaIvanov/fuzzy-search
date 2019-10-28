@@ -1,4 +1,19 @@
 window.addEventListener('load', () => {
+	const preload = document.getElementById('preload');
+
+	HTMLElement.prototype.hide = function() {
+		this.classList.add('hiding');
+		setTimeout(() => {
+			this.classList.add('hide');
+		}, 500);
+	};
+
+	HTMLElement.prototype.show = function() {
+		this.className = '';
+	};
+
+	preload.hide();
+
 	// search option
 	const options = {
 		shouldSort: true,
