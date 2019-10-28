@@ -1,5 +1,6 @@
 window.addEventListener('load', () => {
 	const preload = document.getElementById('preload');
+	const preloadText = preload.querySelector('.text');
 
 	HTMLElement.prototype.hide = function() {
 		this.classList.add('hiding');
@@ -53,6 +54,7 @@ window.addEventListener('load', () => {
 	let db;
 
 	(async function() {
+		preloadText.innerText = 'Load phone DB';
 		const dbResponse = await fetch('phones/phones.json');
 		if ( dbResponse.ok ) {
 			db = await dbResponse.json();
