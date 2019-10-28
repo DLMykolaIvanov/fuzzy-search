@@ -14,7 +14,7 @@ h1, h2 {
     text-align: center;
 }
 
-input {
+input, select {
     padding: 7px 15px;
     border-radius: 4px;
     border: 1px solid #908a8a;
