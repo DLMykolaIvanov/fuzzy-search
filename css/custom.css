@@ -40,6 +40,7 @@ input, select {
     cursor: wait;
     transition: .4s;
     font-size: 1.5rem;
+    z-index: 999;
 }
 
 #preload.hiding {
@@ -181,4 +182,38 @@ input, select {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.image_box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
 
+    display: none;
+}
+
+.image_box.show {
+    display: flex;
+}
+
+#close_image_box {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    background-color: transparent;
+    border: none;
+    width: 70px;
+    cursor: pointer;
+}
+
+#close_image_box svg circle {
+    fill: #7d433c;
+}
+
+#close_image_box:hover svg circle {
+    fill: #D75A4A;
+}

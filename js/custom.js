@@ -2,20 +2,13 @@ window.addEventListener('load', () => {
 	const preload = document.getElementById('preload');
 	const resultBox = document.getElementById('result_box');
 	const select = document.getElementById('select');
+	const phoneImageBox = document.querySelector('.image_box');
 
 	HTMLElement.prototype.hide = function(text) {
 		this.querySelector('.text').innerHTML = text;
 		setTimeout(() => {
-			if ( this.className === 'show' ) {
-				this.className = '';
-				return;
-			}
 			this.classList.add('hiding');
 			setTimeout(() => {
-				if ( this.className === 'show' ) {
-					this.className = '';
-					return;
-				}
 				this.classList.add('hide');
 			}, 500);
 		}, 500);
@@ -137,9 +130,15 @@ window.addEventListener('load', () => {
 	}
 
 	document.getElementById('search').addEventListener('keyup', function() {
-		const fuse = new Fuse(db, options);
-		const result = fuse.search(this.value);
-		renderResult(result);
+		const value = this.value,
+					element = this;
+		setTimeout(function () {
+			if ( value === element.value ) {
+				const fuse = new Fuse(db, options);
+				const result = fuse.search(value);
+				renderResult(result);
+			}
+		}, 500);
 	});
 
 	function showMoreToggle(target) {
@@ -152,8 +151,26 @@ window.addEventListener('load', () => {
 		parentNode.classList.toggle('open');
 	}
 
-	function getImagePhone(target) {
+	async function getImagePhone(target) {
+		preload.show('Load phone image');
+		const modelName = target.parentNode.parentNode.querySelector('h3').innerText;
+		const modelNameSearch = await fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyB7G_yY3BhStZwQpo3Mlp-gR49863RxkcY&cx=017597289859248119791:cvewz9ndadp&q=${modelName}&searchType=image&imgSize=large`);
+		if ( modelNameSearch.ok ) {
+			const modelNameSearchResult = await modelNameSearch.json();
+			if ( modelNameSearchResult.queries.request[0].totalResults > 0 ) {
+				let imageURL = '';
+				imageURL = modelNameSearchResult.items[0].link;
+				phoneImageBox.querySelector('img').src = imageURL;
+				phoneImageBox.classList.add('show');
+				preload.hide('Phone image loaded');
+			} else {
+				preload.hide('Phone image now found');
+			}
 
+		} else {
+			console.log('image load error:', modelImage.status);
+			preload.hide('Load phone image error!');
+		}
 	}
 
 	document.addEventListener('click', (e) => {
@@ -162,5 +179,10 @@ window.addEventListener('load', () => {
 		} else if ( e.target.classList.contains('get_image') ) {
 			getImagePhone(e.target);
 		}
-	})
+	});
+	
+	document.getElementById('close_image_box').addEventListener('click', () => {
+		phoneImageBox.classList.remove('show');
+		phoneImageBox.querySelector('img').src = '';
+	});
 });
