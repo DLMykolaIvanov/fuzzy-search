@@ -152,17 +152,17 @@ window.addEventListener('load', () => {
 	}
 
 	async function getImagePhone(target) {
-		preload.show('Load phone image');
+		preload.show('Search phome image');
 		const modelName = target.parentNode.parentNode.querySelector('h3').innerText;
 		const modelNameSearch = await fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyB7G_yY3BhStZwQpo3Mlp-gR49863RxkcY&cx=017597289859248119791:cvewz9ndadp&q=${modelName}&searchType=image&imgSize=large`);
 		if ( modelNameSearch.ok ) {
 			const modelNameSearchResult = await modelNameSearch.json();
 			if ( modelNameSearchResult.queries.request[0].totalResults > 0 ) {
+				preload.show('Load phone image');
 				let imageURL = '';
 				imageURL = modelNameSearchResult.items[0].link;
 				phoneImageBox.querySelector('img').src = imageURL;
 				phoneImageBox.classList.add('show');
-				preload.hide('Phone image loaded');
 			} else {
 				preload.hide('Phone image now found');
 			}
@@ -180,9 +180,13 @@ window.addEventListener('load', () => {
 			getImagePhone(e.target);
 		}
 	});
-	
+
 	document.getElementById('close_image_box').addEventListener('click', () => {
 		phoneImageBox.classList.remove('show');
 		phoneImageBox.querySelector('img').src = '';
+	});
+
+	phoneImageBox.querySelector('img').addEventListener('load', () => {
+		preload.hide('Phone image loaded');
 	});
 });
