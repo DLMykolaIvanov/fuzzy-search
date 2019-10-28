@@ -89,10 +89,48 @@ window.addEventListener('load', () => {
 		}
 	})();
 
+	function elementHTML(element, index) {
+		return `<div class="item item-${index}">
+							<h3>${element.DeviceName}</h3>
+							<div class="info">
+								<p>Announced: ${element.announced}</p>
+								<p>Screen: ${element.type}</p>
+								<p>Size: ${element.size}</p>
+								<p>Battery: ${element.battery_c}</p>
+								<p>Colors: ${element.colors}</p>
+								<p>Price: ${element.price}</p>
+								<button class="show_more">Show More</button>
+								<button class="get_image">Get Image</button>
+							</div>
+							<div class="additional_information">
+								<p>Card: ${element.card_slot}</p>
+								<p>Weight: ${element.weight}</p>
+								<p>SIM: ${element.sim}</p>
+								<p>Resolution: ${element.resolution}</p>
+								<p>Card slot: ${element.card_slot}</p>
+								<p>CPU: ${element.cpu}</p>
+								<p>Chipset: ${element.chipset}</p>
+								<p>GPU: ${element.gpu}</p>
+								<p>Internal: ${element.internal}</p>
+								<p>OS: ${element.os}</p>
+								<p>Video: ${element.video}</p>
+								<p>Build: ${element.build}</p>
+								<p>2G: ${element._2g_bands}</p>
+								<p>3G: ${element._3g_bands}</p>
+								<p>4G: ${element._4g_bands}</p>
+							</div>
+						</div>`;
+	}
+
 	function renderResult(result) {
 		if ( result.length ) {
 			let renderHTML = '';
-			if ( result.length > 100 ) renderHTML += '<p>Result too many (>100) shwo only first 100 elements.</p>'
+			if ( result.length > 100 ) renderHTML += '<p>Result too many (>100) show only first 100 elements.</p>';
+			result.forEach((item, index) => {
+				if ( index > 100 ) return false;
+				renderHTML += elementHTML(item, index);
+			});
+			resultBox.innerHTML = renderHTML;
 		} else {
 			resultBox.innerHTML = '<p>Results not found!</p>'
 		}
@@ -103,4 +141,26 @@ window.addEventListener('load', () => {
 		const result = fuse.search(this.value);
 		renderResult(result);
 	});
+
+	function showMoreToggle(target) {
+		const parentNode = target.parentNode.parentNode;
+		if ( parentNode.classList.contains('open') ) {
+			target.innerText = 'Show More';
+		} else {
+			target.innerText = 'Hide More';
+		}
+		parentNode.classList.toggle('open');
+	}
+
+	function getImagePhone(target) {
+
+	}
+
+	document.addEventListener('click', (e) => {
+		if ( e.target.classList.contains('show_more') ) {
+			showMoreToggle(e.target);
+		} else if ( e.target.classList.contains('get_image') ) {
+			getImagePhone(e.target);
+		}
+	})
 });
